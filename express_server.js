@@ -1,0 +1,11 @@
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('hello from home page!');
+});
+
+const PORT = process.env.PORT || 8006;
+app.listen(PORT, () => {
+  console.log(`server is running at port ${PORT}`);
+});
