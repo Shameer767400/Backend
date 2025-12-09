@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+    <style>
+        .done { color: green; text-decoration: line-through; }
+    </style>
+</head>
+<body>
+
+<h1>Task Manager App</h1>
+
+<input id="taskInput" placeholder="Enter task..." />
+<button id="addBtn">Add</button>
+<button id="loadBtn">Load Sample Tasks</button>
+
+<h3>Filter:</h3>
+<select id="filter">
+    <option value="all">All</option>
+    <option value="done">Completed</option>
+    <option value="pending">Pending</option>
+</select>
+<ul id="taskList"></ul>
+</body>
+</html>
+<script src="todolist.js"></script>

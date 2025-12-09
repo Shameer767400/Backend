@@ -1,0 +1,97 @@
+    // 1️⃣ CLOSURE → ID generator
+    function idGenerator() {
+        let id = 0;
+        return function() {
+            id++;
+            return id;
+        };
+    }
+    const generateID = idGenerator(); // closure
+
+    // 2️⃣ Load tasks from localStorage
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    // 3️⃣ RENDER FUNCTION
+    function render() {
+        const list = document.getElementById("taskList");
+        list.innerHTML = "";
+
+        const filterValue = document.getElementById("filter").value;
+
+        const filtered = tasks.filter(task => {
+            if (filterValue === "done") return task.completed;
+            if (filterValue === "pending") return !task.completed;
+            return true;
+        });
+
+        filtered.forEach(task => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <input type="checkbox" ${task.completed ? "checked" : ""}>
+                <span class="${task.completed ? 'done' : ''}">${task.text}</span>
+                <button class="del">❌</button>
+            `;
+
+            // Toggle done
+            li.querySelector("input").addEventListener("click", () => {
+                task.completed = !task.completed;
+                save();
+                render();
+            });
+
+            // Delete task
+            li.querySelector(".del").addEventListener("click", () => {
+                tasks = tasks.filter(t => t.id !== task.id);
+                save();
+                render();
+            });
+
+            list.appendChild(li);
+        });
+    }
+
+    function save() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    // 4️⃣ ADD TASK
+    document.getElementById("addBtn").addEventListener("click", () => {
+        const text = document.getElementById("taskInput").value;
+
+        if (!text) return alert("Please enter a task");
+
+        tasks.push({
+            id: generateID(),  // closure gives unique ID
+            text,
+            completed: false
+        });
+
+        save();
+        render();
+    });
+
+    // 5️⃣ FILTER CHANGE
+    document.getElementById("filter").addEventListener("change", render);
+
+    // 6️⃣ FETCH SAMPLE TASKS (Async)
+    document.getElementById("loadBtn").addEventListener("click", async () => {
+        try {
+            const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=3");
+            const data = await res.json();
+
+            data.forEach(t => {
+                tasks.push({
+                    id: generateID(),
+                    text: t.title,
+                    completed: t.completed
+                });
+            });
+
+            save();
+            render();
+        } catch (err) {
+            alert("Error loading tasks");
+        }
+    });
+    render();
+
