@@ -1,4 +1,0 @@
-const getStudents = (req,res)=>
-{
-    
-}
