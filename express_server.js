@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-app.get('/', (req, res) => {
-  res.send('hello from home page!');
+app.get('/users', (req, res) => {
+  res.send('hello from users page!');
 });
 const PORT = process.env.PORT || 8006;
 app.listen(PORT, () => {
