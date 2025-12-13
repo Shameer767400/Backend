@@ -1,4 +1,4 @@
-    // 1️⃣ CLOSURE → ID generator
+    // 1️CLOSURE → ID generator
     function idGenerator() {
         let id = 0;
         return function() {
@@ -8,10 +8,10 @@
     }
     const generateID = idGenerator(); // closure
 
-    // 2️⃣ Load tasks from localStorage
+    // 2 Load tasks from localStorage
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    // 3️⃣ RENDER FUNCTION
+    // 3️ RENDER FUNCTION
     function render() {
         const list = document.getElementById("taskList");
         list.innerHTML = "";
@@ -23,7 +23,6 @@
             if (filterValue === "pending") return !task.completed;
             return true;
         });
-
         filtered.forEach(task => {
             const li = document.createElement("li");
             li.innerHTML = `
@@ -45,11 +44,9 @@
                 save();
                 render();
             });
-
             list.appendChild(li);
         });
     }
-
     function save() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }
@@ -61,7 +58,7 @@
         if (!text) return alert("Please enter a task");
 
         tasks.push({
-            id: generateID(),  // closure gives unique ID
+            id: generateID(),
             text,
             completed: false
         });
@@ -78,7 +75,6 @@
         try {
             const res = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=3");
             const data = await res.json();
-
             data.forEach(t => {
                 tasks.push({
                     id: generateID(),
@@ -86,12 +82,11 @@
                     completed: t.completed
                 });
             });
-
             save();
             render();
         } catch (err) {
             alert("Error loading tasks");
         }
-    });
+    }); 
     render();
 
